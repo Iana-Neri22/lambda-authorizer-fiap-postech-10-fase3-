@@ -7,7 +7,7 @@ deploy:
 	serverless deploy
 
 test:
-	python -m pytest
+	PYTHONPATH=$PYTHONPATH:. python -m pytest -p no:warnings
 
 clean:
 	rm -rf .serverless
