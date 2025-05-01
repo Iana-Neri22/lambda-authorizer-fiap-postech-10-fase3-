@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Lambda authorizer with JWT and CPF authentication",
   "devDependencies": {
+    "serverless": "^3.38.0",
     "serverless-python-requirements": "^6.0.0"
   }
 } 
