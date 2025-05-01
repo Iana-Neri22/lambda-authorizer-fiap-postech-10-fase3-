@@ -3,23 +3,27 @@ import logging
 import secrets
 import string
 
-from src.gateway import cliente_gateway
+from src.gateway.cliente_gateway import get_cliente_by_cpf
 
 # Configure logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-def generate_token():
-    """Generate a secure random token"""
-    alphabet = string.ascii_letters + string.digits
-    token = ''.join(secrets.choice(alphabet) for _ in range(32))
-    return token
+def generate_token(cpf):
+    cliente = get_cliente_by_cpf(cpf)
+    if cliente:
+        """Generate a secure random token"""
+        alphabet = string.ascii_letters + string.digits
+        token = ''.join(secrets.choice(alphabet) for _ in range(32))
+        return token
+    else:
+        return None
 
 def validate_token(token):
     """Validate the provided token"""
     # In a real implementation, you would validate against a database or other storage
     # For this example, we'll just check if it's a valid format
-    return cliente_gateway.get_cliente_by_cpf(token)
+    return len(token) == 32 and all(c in string.ascii_letters + string.digits for c in token)
 
 def generate_token_handler(event, context):
     try:
