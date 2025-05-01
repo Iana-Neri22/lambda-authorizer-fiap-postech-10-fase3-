@@ -19,12 +19,12 @@ def setup_test_database():
     except Exception as e:
         print(f"Error setting up test database: {str(e)}")
 
-def test_get_cliente_by_cpf(cpf):
+def test_get_cliente_by_cpf():
     setup_test_database()
 
     # Test case 1: Valid CPF that exists in database
     try:
-        cpf = cpf
+        cpf = "12345678901"
         result = get_cliente_by_cpf(cpf)
         assert result is not None, "Cliente should be found"
         assert result['cpf'] == cpf, "CPF should match"
@@ -51,4 +51,4 @@ def test_get_cliente_by_cpf(cpf):
         print(f"Test 3 failed: {str(e)}")
 
 if __name__ == "__main__":
-    test_get_cliente_by_cpf("12345678901") 
+    test_get_cliente_by_cpf() 

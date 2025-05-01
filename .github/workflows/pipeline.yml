@@ -25,6 +25,13 @@ jobs:
 
       - name: 🔍 Run tests
         run: make test
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_POOL_SIZE: ${{ secrets.MYSQL_POOL_SIZE }}
 
   deploy:
 
