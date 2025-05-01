@@ -1,0 +1,8 @@
+{
+  "name": "lambda-authorizer",
+  "version": "1.0.0",
+  "description": "Lambda authorizer with JWT and CPF authentication",
+  "devDependencies": {
+    "serverless-python-requirements": "^6.0.0"
+  }
+} 

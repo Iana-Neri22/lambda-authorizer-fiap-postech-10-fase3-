@@ -1,0 +1,25 @@
+service: FiapLanchoneteAuthorizer
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: us-east-1
+
+functions:
+  authorizer:
+    handler: lambda_function.lambda_handler
+    events:
+      - http:
+          path: /authorize
+          method: post
+          cors: true
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: false
+    layer:
+      name: python-deps
+      description: Python dependencies for Lambda Authorizer 

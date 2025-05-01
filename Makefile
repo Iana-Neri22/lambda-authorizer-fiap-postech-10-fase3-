@@ -2,6 +2,7 @@
 
 install:
 	pip install -r requirements.txt
+	echo "Done"
 
 deploy:
 	serverless deploy

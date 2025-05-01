@@ -2,13 +2,50 @@
 
 This is a Lambda authorizer that uses JWT tokens for authentication based on CPF (Brazilian individual taxpayer registration).
 
+## Prerequisites
+
+1. Node.js and npm installed
+2. Python 3.11 or later installed
+3. AWS account and credentials configured
+4. Serverless Framework account
+
 ## Setup
 
-1. Create a new Lambda function in AWS
-2. Upload the `lambda_function.py` file
-3. Install the required dependencies (PyJWT) in a ZIP file and upload it
-4. Set the following environment variable in your Lambda configuration:
-   - `JWT_SECRET`: Your secret key for JWT token signing
+1. Configure your AWS credentials:
+   ```bash
+   aws configure
+   ```
+
+2. Install the Serverless Framework globally:
+   ```bash
+   npm install -g serverless
+   ```
+
+3. Login to your Serverless Framework account:
+   ```bash
+   serverless login
+   ```
+
+4. Install project dependencies:
+   ```bash
+   make install
+   ```
+
+## Makefile Commands
+
+The project includes a Makefile with the following commands:
+
+- `make install`: Installs all Python dependencies from requirements.txt
+- `make deploy`: Deploys the Lambda function to AWS using Serverless Framework
+- `make test`: Runs the test suite
+- `make clean`: Removes build artifacts and cache files
+
+## API Endpoint
+
+After deployment, your Lambda function will be available at:
+```
+https://3mpv0zx0jl.execute-api.us-east-1.amazonaws.com/dev/authorize
+```
 
 ## How it Works
 
