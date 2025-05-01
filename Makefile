@@ -2,10 +2,11 @@
 
 install:
 	pip install -r requirements.txt
+	npm install
 	echo "Done"
 
 deploy:
-	serverless deploy
+	npx serverless deploy
 
 test:
 	PYTHONPATH=$PYTHONPATH:. python -m pytest -p no:warnings
