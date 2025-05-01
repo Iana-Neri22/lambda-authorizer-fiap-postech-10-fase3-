@@ -86,3 +86,6 @@ Authorization: Bearer <your-jwt-token>
 The authorizer will return:
 - Allow: If the token is valid and contains a CPF
 - Deny: If the token is missing, invalid, expired, or doesn't contain a CPF 
+
+-- API Gateway Endpoint
+https://3mpv0zx0jl.execute-api.us-east-1.amazonaws.com/dev/cliente

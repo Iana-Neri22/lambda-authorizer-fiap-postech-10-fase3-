@@ -1,9 +1,44 @@
 import json
 import logging
+import secrets
+import string
+
+from src.gateway import cliente_gateway
 
 # Configure logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+
+def generate_token():
+    """Generate a secure random token"""
+    alphabet = string.ascii_letters + string.digits
+    token = ''.join(secrets.choice(alphabet) for _ in range(32))
+    return token
+
+def validate_token(token):
+    """Validate the provided token"""
+    # In a real implementation, you would validate against a database or other storage
+    # For this example, we'll just check if it's a valid format
+    return cliente_gateway.get_cliente_by_cpf(token)
+
+def generate_token_handler(event, context):
+    try:
+        logger.info('Generating new token')
+        token = generate_token()
+        
+        response = {
+            "statusCode": 200,
+            "body": json.dumps({
+                "token": token
+            })
+        }
+        
+        logger.info('Token generated successfully')
+        return response
+        
+    except Exception as e:
+        logger.error('Error generating token: %s', str(e))
+        raise
 
 def lambda_handler(event, context):
     try:
@@ -14,11 +49,12 @@ def lambda_handler(event, context):
         if 'authorizationToken' not in event:
             logger.error('Missing authorizationToken in event')
             raise ValueError('Missing authorizationToken in event')
-            
+
+        authorization_token = event['authorizationToken']
         auth = 'Deny'
         
         # Validate the token
-        if event['authorizationToken'] == 'abc123':
+        if validate_token(authorization_token):
             auth = 'Allow'
             logger.info('Token validation successful')
         else:
@@ -27,7 +63,7 @@ def lambda_handler(event, context):
         
         # Construct the response
         auth_response = {
-            "principalId": "abc123",
+            "principalId": "user",
             "policyDocument": {
                 "Version": "2012-10-17",
                 "Statement": [
