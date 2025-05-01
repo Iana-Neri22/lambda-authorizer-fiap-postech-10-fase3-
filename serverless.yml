@@ -26,7 +26,18 @@ plugins:
 
 custom:
   pythonRequirements:
-    dockerizePip: false
+    noDeploy:
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - python-dateutil
+      - s3transfer
+      - six
+      - urllib3
     layer:
       name: python-deps
-      description: Python dependencies for Lambda Authorizer 
+      description: Python dependencies for Lambda Authorizer
+      compatibleRuntimes:
+        - python3.11
+      retain: true
