@@ -1,7 +1,6 @@
 import os
-import mysql.connector
-from mysql.connector import pooling
-from mysql.connector import Error
+import pymysql
+from pymysql import Error
 from dotenv import load_dotenv
 import logging
 
@@ -14,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class MySQLConnection:
     _instance = None
-    _pool = None
+    _connection = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -22,35 +21,35 @@ class MySQLConnection:
         return cls._instance
 
     def __init__(self):
-        if self._pool is None:
-            self._initialize_pool()
+        if self._connection is None:
+            self._initialize_connection()
 
-    def _initialize_pool(self):
+    def _initialize_connection(self):
         try:
-            db_config = {
-                'host': os.getenv('MYSQL_HOST'),
-                'user': os.getenv('MYSQL_USER'),
-                'password': os.getenv('MYSQL_PASSWORD'),
-                'database': os.getenv('MYSQL_DATABASE'),
-                'port': int(os.getenv('MYSQL_PORT')),
-                'pool_name': 'mypool',
-                'pool_size': int(os.getenv('MYSQL_POOL_SIZE', 5)),
-                'pool_reset_session': True
-            }
-
-            self._pool = mysql.connector.pooling.MySQLConnectionPool(**db_config)
-            logger.info("MySQL connection pool initialized successfully")
+            self._connection = pymysql.connect(
+                host=os.getenv('MYSQL_HOST'),
+                user=os.getenv('MYSQL_USER'),
+                password=os.getenv('MYSQL_PASSWORD'),
+                database=os.getenv('MYSQL_DATABASE'),
+                port=int(os.getenv('MYSQL_PORT')),
+                charset='utf8mb4',
+                cursorclass=pymysql.cursors.DictCursor,
+                connect_timeout=5
+            )
+            logger.info("MySQL connection initialized successfully")
         except Error as e:
-            logger.error(f"Error initializing MySQL connection pool: {e}")
+            logger.error(f"Error initializing MySQL connection: {e}")
             raise
 
     def get_connection(self):
-        try:
-            connection = self._pool.get_connection()
-            return connection
-        except Error as e:
-            logger.error(f"Error getting connection from pool: {e}")
-            raise
+        if not self._connection or not self._connection.open:
+            self._initialize_connection()
+        return self._connection
+
+    def close(self):
+        if self._connection:
+            self._connection.close()
+            self._connection = None
 
     def execute_query(self, query, params=None):
         connection = None

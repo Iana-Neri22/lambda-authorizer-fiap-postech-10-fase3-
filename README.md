@@ -89,3 +89,6 @@ The authorizer will return:
 
 -- API Gateway Endpoint
 https://3mpv0zx0jl.execute-api.us-east-1.amazonaws.com/dev/cliente
+
+-- Deploy through the CLI
+serverless deploy
