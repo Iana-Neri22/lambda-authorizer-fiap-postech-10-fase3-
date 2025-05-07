@@ -3,9 +3,9 @@ from src.external.mysql.create_connection import MySQLConnection
 def get_cliente_by_cpf(cpf: str):
     mysql_conn = MySQLConnection()
     connection = mysql_conn.get_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     try:
-        query = "SELECT * FROM cliente WHERE cpf = %s"
+        query = "SELECT * FROM Cliente WHERE cpfCliente = %s"
         cursor.execute(query, (cpf,))
         return cursor.fetchone()
     finally:

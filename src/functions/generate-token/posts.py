@@ -38,4 +38,4 @@ def handler(event: APIGatewayProxyEvent, context: LambdaContext) -> Dict[str, An
 
     except Exception as error:
         print(f"Error: {str(error)}")
-        return api_response(500, {'error': 'Internal Server Error'})
+        return api_response(500, {'error': 'Internal Server Error!'})
